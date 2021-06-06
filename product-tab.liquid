@@ -1,0 +1,119 @@
+<style>
+	.tabs-details {
+    border-bottom: 1px solid #00000026;
+    border-top: 1px solid #00000026;
+}
+.tabs-details .text-group{
+  position: relative;
+}
+.tabs-details .heading-wrap{
+  padding: 10px 30px;
+  position: relative;
+}
+.tabs-details .heading-wrap:hover{
+    background: #0000001a;
+}
+.tabs-details .text-group .tab-link {
+    cursor: pointer;
+    font-size: 1.05rem;
+}
+.tabs-details .text-group:not(:last-child) {
+    border-bottom: 1px solid #00000026;
+}
+.tab_content{
+  display: none;
+  padding-top: 10px;
+}
+.tab_content.current{
+  display: block;
+} 
+.text-group svg {
+  width: 12px;
+  position: absolute;
+  left: 10px;
+  top: 16px;
+  transform: rotate(90deg);
+  transform: rotate(0deg);
+  transition: transform .2s ease-out;
+}
+.text-group svg.up {
+  transform: rotate(-90deg);
+  transform: rotate(90deg);
+}
+.tabs-details .contant_div {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 15px;
+}
+.tabs-details ul {
+    margin-left: 17.5px;
+    margin-bottom: 5px;
+}
+.product-single__description{
+    margin-top: 15px;
+}
+</style>
+
+{% assign words_tabs =  product.description | split: '<h5>' %}
+                  {% assign count_tab_check = 0 %}
+                {% for words_tab in words_tabs %}
+                  {% assign count_tab_check = count_tab_check | plus: 1 %}
+                {% endfor %}
+                {% if count_tab_check >= 2 %}
+              <div id="tabs-infor" class="">  
+                <div class="tabs-details">
+                  {% assign count_tab2 = 0 %}
+                    {% for words_tab in words_tabs %}
+
+                      {% assign count_tab2 = count_tab2 | plus: 1 %}
+                      {% if count_tab2 == 1 %} {% continue %} {% endif %}
+                      <div class="text-group">
+                        <div class="heading-wrap"><svg style="width: 12px;" {% if  count_tab2 == 2 %} class="up" {% endif %} viewBox="0 0 100 100" ><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
+                        <div class="icon-toggle tab-link {% if  count_tab2 == 2 %} current {% endif %}" data-tab="tab-{{count_tab2}}" >
+                          {{words_tab | split: '</h5>' | first }}
+                        </div></div>
+
+                        <div id="tab-{{count_tab2}}" class="tab_content {% if  count_tab2 == 2 %} current {% endif %}" >
+                          <div class="contant_div">
+                          {% assign tabcontent = words_tab | split: '</h5>' | last %}
+                          {{tabcontent}}
+                          </div>
+                        </div>
+                      </div>
+
+                    {% endfor %}
+                    {% assign count_tab2 = count_tab2 | plus: 1 %}
+                    <div class="text-group">
+                        <div class="heading-wrap"><svg style="width: 12px;" viewBox="0 0 100 100" ><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
+                        <div class="icon-toggle tab-link" data-tab="tab-{{count_tab2}}" >
+                          Review title
+                        </div></div>
+
+                        <div id="tab-{{count_tab2}}" class="tab_content" >
+                          <div class="contant_div">
+                                 Review Text
+                          </div>
+                        </div>
+                      </div>
+                    
+
+
+                </div>
+              </div>
+
+            {% else %}
+              {{ product.description }}
+            {% endif %}
+            <script defer>
+  window.addEventListener('DOMContentLoaded', function() {
+        (function($) {
+
+            $('.tabs-details .text-group .heading-wrap').click(function() {
+                console.log('ready')
+                $(this).next().slideToggle();
+                $( this ).prev().toggleClass( "up" );
+              });
+             
+        })(jQuery);
+    });
+</script>
