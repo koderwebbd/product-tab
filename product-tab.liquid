@@ -1,4 +1,44 @@
 <style>
+/* + icon <span class="Collapsible__Plus"></span>*/
+.Collapsible__Plus {
+    position: absolute;
+    right: 0;
+    top: calc(50% - (11px / 2));
+    width: 11px;
+    height: 11px;
+}
+.Collapsible__Plus::before {
+    width: 11px;
+    height: 1px;
+    opacity: 1;
+}
+.Collapsible__Plus::after {
+    width: 1px;
+    height: 11px;
+}
+.Collapsible__Plus::after, .Collapsible__Plus::before {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) rotate(
+-90deg
+);
+    background-color: currentColor;
+    transition: transform .4s ease-in-out,opacity .4s ease-in-out;
+}
+.heading-wrap.up  .Collapsible__Plus::before {
+    opacity: 0;
+}
+.heading-wrap.up .Collapsible__Plus::after, 
+.heading-wrap.up .Collapsible__Plus::before {
+    transform: translate(-50%,-50%) rotate(
+90deg
+);
+}
+</style>
+
+<style>
 	.tabs-details {
     border-bottom: 1px solid #00000026;
     border-top: 1px solid #00000026;
