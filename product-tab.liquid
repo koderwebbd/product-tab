@@ -94,64 +94,73 @@
 }
 </style>
 
-{% assign words_tabs =  product.description | split: '<h5>' %}
-                  {% assign count_tab_check = 0 %}
-                {% for words_tab in words_tabs %}
-                  {% assign count_tab_check = count_tab_check | plus: 1 %}
-                {% endfor %}
-                {% if count_tab_check >= 2 %}
-              <div id="tabs-infor" class="">  
-                <div class="tabs-details">
-                  {% assign count_tab2 = 0 %}
-                    {% for words_tab in words_tabs %}
+{% assign before_heading = product.description | remove: '<div>'  | remove: '</div>' | split: '<h5>' | first    %}
+{{ before_heading }}
 
-                      {% assign count_tab2 = count_tab2 | plus: 1 %}
-                      {% if count_tab2 == 1 %} {% continue %} {% endif %}
-                      <div class="text-group">
-                        <div class="heading-wrap"><svg style="width: 12px;" {% if  count_tab2 == 2 %} class="up" {% endif %} viewBox="0 0 100 100" ><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
-                        <div class="icon-toggle tab-link {% if  count_tab2 == 2 %} current {% endif %}" data-tab="tab-{{count_tab2}}" >
-                          {{words_tab | split: '</h5>' | first }}
-                        </div></div>
+{% assign words_tabs =  product.description | remove: '<div>'  | remove: '</div>' | split: '<h5>'  %}
+{% assign count_tab_check = 0 %}
 
-                        <div id="tab-{{count_tab2}}" class="tab_content {% if  count_tab2 == 2 %} current {% endif %}" >
-                          <div class="contant_div">
-                          {% assign tabcontent = words_tab | split: '</h5>' | last %}
-                          {{tabcontent}}
-                          </div>
-                        </div>
-                      </div>
+{% for words_tab in words_tabs %}
+  {% assign count_tab_check = count_tab_check | plus: 1 %}
+{% endfor %}
 
-                    {% endfor %}
-                    {% assign count_tab2 = count_tab2 | plus: 1 %}
-                    <div class="text-group">
-                        <div class="heading-wrap"><svg style="width: 12px;" viewBox="0 0 100 100" ><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
-                        <div class="icon-toggle tab-link" data-tab="tab-{{count_tab2}}" >
-                          Review title
-                        </div></div>
+{% if count_tab_check >= 2 %}
+  <div id="tabs-infor" class="">  
+    <div class="tabs-details">
+      {% assign count_tab2 = 0 %}
+      {% for words_tab in words_tabs %}
 
-                        <div id="tab-{{count_tab2}}" class="tab_content" >
-                          <div class="contant_div">
-                                 Review Text
-                          </div>
-                        </div>
-                      </div>
-                    
+        {% assign count_tab2 = count_tab2 | plus: 1 %}
+        {% if count_tab2 == 1 %} {% continue %} {% endif %}
+        <div class="text-group">
+          <div class="heading-wrap">
+            <div class="icon-toggle tab-link {% if  count_tab2 == 2 %} current {% endif %}" data-tab="tab-{{count_tab2}}" >
+              {{words_tab | split: '</h5>' | first }}
+            </div>
+            <svg style="width: 12px;" {% if  count_tab2 == 2 %} class="up1" {% endif %} viewBox="0 0 100 100" ><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
+          </div>
+
+          <div id="tab-{{count_tab2}}" class="tab_content {% if  count_tab2 == 2 %} current1 {% endif %}" >
+            <div class="contant_div">
+              {% assign tabcontent = words_tab | split: '</h5>' | last %}
+              {{tabcontent}}
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+
+      
+      {% assign count_tab2 = count_tab2 | plus: 1 %}
+      <div class="text-group">
+        <div class="heading-wrap">
+          <div class="icon-toggle tab-link" data-tab="tab-{{count_tab2}}" >
+            {{ block.settings.bundle_title }}
+          </div>
+        </div>
+
+        <div id="tab-{{count_tab2}}" class="tab_content" >
+          <div class="contant_div">
+            Lorem ipsum dolor sit amet consectetur adipisicing, elit. Deleniti doloremque cumque sed odio fugiat quibusdam provident quis ex hic saepe, voluptatum labore delectus iusto reprehenderit ducimus dolorum eligendi. Doloribus, officia.
+              {% render 'product-bundle', product: product %}
+          </div>
+        </div>
+      </div> 
+        
 
 
-                </div>
-              </div>
-
-            {% else %}
-              {{ product.description }}
-            {% endif %}
-            <script defer>
+    </div>
+  </div>
+{% else %}
+   {{ product.description }}
+{% endif %}
+<script defer>
   window.addEventListener('DOMContentLoaded', function() {
         (function($) {
 
             $('.tabs-details .text-group .heading-wrap').click(function() {
-                console.log('ready')
                 $(this).next().slideToggle();
-                $( this ).prev().toggleClass( "up" );
+                $( this ).find('svg').toggleClass( "up" );
               });
              
         })(jQuery);
